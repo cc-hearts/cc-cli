@@ -1,9 +1,7 @@
 {
   "compilerOptions": {
     "target": "ESNext",
-    "lib": [
-      "ESNext"
-    ],
+    "lib": ["ESNext"],
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "module": "ESNext",
@@ -26,7 +24,5 @@
     "resolveJsonModule": true,
     "noEmit": true
   },
-  "exclude": [
-    "packages/template/**/*.ts"
-  ]
+  "exclude": ["packages/template/**/*.ts"]
 }
