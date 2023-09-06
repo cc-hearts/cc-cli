@@ -1,0 +1,18 @@
+{
+  "name": "ts-node-template",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "vitest",
+    "dev": "ts-node-esm ./src/index.ts"
+  },
+  "keywords": [],
+  "author": "cc heart",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.5.9",
+    "vitest": "^0.34.3"
+  }
+}
