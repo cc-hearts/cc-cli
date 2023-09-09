@@ -43,6 +43,7 @@ const checkOverride = async () => {
   return await inquirer.prompt([overridePrompt])
 }
 
+console.log('123')
 async function start() {
   const options = await getOption()
   const { selectTemplateType, templateName } = options
