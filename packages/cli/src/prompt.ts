@@ -16,8 +16,8 @@ export const selectTemplatePrompt = {
       value: 'react17',
     },
     {
-      name: 'vue3',
-      value: 'vue3',
+      name: 'vue2',
+      value: 'vue2',
     },
   ],
 }
