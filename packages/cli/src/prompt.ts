@@ -8,6 +8,14 @@ export const selectTemplatePrompt = {
       value: 'ts-node',
     },
     {
+      name: 'react16',
+      value: 'react16',
+    },
+    {
+      name: 'react17',
+      value: 'react17',
+    },
+    {
       name: 'vue3',
       value: 'vue3',
     },
