@@ -4,7 +4,7 @@
   "description": "",
   "type": "module",
   "bin": {
-    "cc": "./packages/cli/bin/index.js"
+    "cc-cli": "./packages/cli/bin/index.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
