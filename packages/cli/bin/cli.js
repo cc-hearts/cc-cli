@@ -1,32 +1,21 @@
-import { fileURLToPath } from 'url';
-import inquirer from 'inquirer';
-import { resolve } from 'path';
-import { mkdir, readdir, rm } from 'fs/promises';
 import { existsSync, createReadStream, createWriteStream } from 'fs';
+import { readdir, mkdir, rm } from 'node:fs/promises';
+import { resolve } from 'path';
+import { fileURLToPath as fileURLToPath$1 } from 'url';
+import inquirer from 'inquirer';
+import { fileURLToPath } from 'node:url';
 
-const selectTemplatePrompt = {
-    type: 'list',
-    message: 'select a template type',
-    name: 'selectTemplateType',
-    choices: [
-        {
-            name: 'ts-node',
-            value: 'ts-node',
-        },
-        {
-            name: 'react16',
-            value: 'react16',
-        },
-        {
-            name: 'react17',
-            value: 'react17',
-        },
-        {
-            name: 'vue2',
-            value: 'vue2',
-        },
-    ],
-};
+async function getTemplatePrompt() {
+    const templatePath = resolve(fileURLToPath(import.meta.url), '..', '..', '..', 'template');
+    const dirs = await readdir(templatePath, { 'withFileTypes': true });
+    const choices = dirs.filter(dir => dir.isDirectory() && !dir.name.startsWith('.')).map(dir => ({ name: dir.name, value: dir.name }));
+    return {
+        type: 'list',
+        message: 'select a template type',
+        name: 'selectTemplateType',
+        choices
+    };
+}
 const templateNamePrompt = {
     type: 'input',
     message: 'input a template name',
@@ -38,9 +27,10 @@ const overridePrompt = {
     message: 'override files ?',
     name: 'override',
 };
+getTemplatePrompt();
 
 const getOption = async () => {
-    const { selectTemplateType } = await inquirer.prompt([selectTemplatePrompt]);
+    const { selectTemplateType } = await inquirer.prompt([await getTemplatePrompt()]);
     const { templateName } = await inquirer.prompt([templateNamePrompt]);
     return {
         selectTemplateType,
@@ -102,7 +92,7 @@ function createDirAndFile(dirs, rootPath, templatePath) {
     });
 }
 function getTemplatePath(templateName) {
-    return resolve(fileURLToPath(import.meta.url), '..', '..', '..', 'template', templateName);
+    return resolve(fileURLToPath$1(import.meta.url), '..', '..', '..', 'template', templateName);
 }
 function write(targetFilePath, originFilePath) {
     return new Promise((resolve) => {

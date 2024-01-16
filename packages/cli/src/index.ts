@@ -1,9 +1,9 @@
+import { createReadStream, createWriteStream, existsSync } from 'fs'
+import { mkdir, readdir, rm } from 'node:fs/promises'
+import { Dirent } from 'node:fs'
+import { resolve } from 'path'
 import { fileURLToPath } from 'url'
 import { checkOverride, getOption } from './create.js'
-import { resolve } from 'path'
-import { readdir, mkdir, rm } from 'fs/promises'
-import { Dirent } from 'node:fs'
-import { createReadStream, createWriteStream, existsSync } from 'fs'
 
 async function start() {
   const options = await getOption()

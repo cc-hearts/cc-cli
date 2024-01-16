@@ -1,25 +1,17 @@
-export const selectTemplatePrompt = {
-  type: 'list',
-  message: 'select a template type',
-  name: 'selectTemplateType',
-  choices: [
-    {
-      name: 'ts-node',
-      value: 'ts-node',
-    },
-    {
-      name: 'react16',
-      value: 'react16',
-    },
-    {
-      name: 'react17',
-      value: 'react17',
-    },
-    {
-      name: 'vue2',
-      value: 'vue2',
-    },
-  ],
+import { readdir } from "node:fs/promises";
+import { fileURLToPath, } from "node:url"
+import { resolve } from 'path'
+
+export async function getTemplatePrompt() {
+  const templatePath = resolve(fileURLToPath(import.meta.url), '..', '..', '..', 'template');
+  const dirs = await readdir(templatePath, { 'withFileTypes': true })
+  const choices = dirs.filter(dir => dir.isDirectory() && !dir.name.startsWith('.')).map(dir => ({ name: dir.name, value: dir.name }))
+  return {
+    type: 'list',
+    message: 'select a template type',
+    name: 'selectTemplateType',
+    choices
+  }
 }
 
 export const templateNamePrompt = {
@@ -34,3 +26,6 @@ export const overridePrompt = {
   message: 'override files ?',
   name: 'override',
 }
+
+
+getTemplatePrompt()

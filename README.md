@@ -7,7 +7,7 @@
 To install `cc-cli`, use the following command:
 
 ```shell
-npm i -g @cc-heart/cc-cli
+pnpm i -g @cc-heart/cc-cli
 ```
 
 ## Usage
@@ -15,7 +15,7 @@ npm i -g @cc-heart/cc-cli
 create a repo from template
 
 ```shell
-pnpm cc
+pnpm cc-cli
 ```
 
 ## Contributing

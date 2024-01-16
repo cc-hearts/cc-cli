@@ -1,33 +1,35 @@
 {
   "name": "@cc-heart/cc-cli",
   "version": "0.1.2",
-  "description": "",
+  "description": "a cli tool",
   "type": "module",
   "bin": {
     "cc-cli": "./packages/cli/bin/index.js"
   },
   "scripts": {
+    "dev": "npx nodemon",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "ts-node-esm ./packages/cli/index.ts",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
     "build": "rollup -c"
   },
   "keywords": [
-    "cli"
+    "cli",
+    "template"
   ],
-  "author": "",
+  "author": "carl chen",
   "license": "MIT",
-  "dependencies": {
-    "inquirer": "^9.2.10",
-    "rollup": "^3.29.0"
+  "peerDependencies": {
+    "inquirer": "^9.2.10"
   },
   "devDependencies": {
     "@cc-heart/eslint-config": "^1.0.0",
-    "@types/inquirer": "^9.0.3",
-    "@types/node": "^20.5.9",
-    "eslint": "^8.48.0",
-    "prettier": "^3.0.3",
+    "@types/inquirer": "^9.0.7",
+    "@types/node": "^20.11.3",
+    "eslint": "^8.56.0",
+    "nodemon": "^3.0.2",
+    "prettier": "^3.2.2",
+    "rollup": "^3.29.4",
     "rollup-plugin-typescript2": "^0.35.0",
-    "vitest": "^0.34.3"
+    "vitest": "^0.34.6"
   }
 }

@@ -1,7 +1,7 @@
 import inquirer from 'inquirer'
 import {
   overridePrompt,
-  selectTemplatePrompt,
+  getTemplatePrompt,
   templateNamePrompt,
 } from './prompt.js'
 
@@ -11,7 +11,7 @@ interface CliOptions {
 }
 
 export const getOption: () => Promise<CliOptions> = async () => {
-  const { selectTemplateType } = await inquirer.prompt([selectTemplatePrompt])
+  const { selectTemplateType } = await inquirer.prompt([await getTemplatePrompt()])
   const { templateName } = await inquirer.prompt([templateNamePrompt])
 
   return {

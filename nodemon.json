@@ -1,0 +1,21 @@
+{
+  "verbose": false,
+  "debug": false,
+  "exec": "pnpm run build",
+  "ignore": [
+    "node_modules",
+    "./test",
+    "**/*.d.ts",
+    "*.test.ts",
+    "*.spec.ts",
+    "test/**/*"
+  ],
+  "events": {
+    "restart": ""
+  },
+  "watch": [
+    "./packages/cli/**/*.ts"
+  ],
+  "ext": "ts,tsx",
+  "inspect": true
+}
