@@ -3,9 +3,9 @@ import { mkdir, readdir, rm } from 'node:fs/promises'
 import { Dirent } from 'node:fs'
 import { resolve } from 'path'
 import { fileURLToPath } from 'url'
-import { checkOverride, getOption } from './create.js'
+import { checkOverride, getOption } from './prompt.js'
 
-async function start() {
+export async function start() {
   const options = await getOption()
   const { selectTemplateType, templateName } = options
   const templatePath = getTemplatePath(selectTemplateType)
@@ -31,12 +31,10 @@ async function start() {
   const dirs = await readdir(templatePath, {
     encoding: 'utf-8',
     withFileTypes: true,
-    recursive: true,
   })
   createDirAndFile(dirs, rootName, templatePath)
 }
 
-start()
 
 function createDirAndFile(
   dirs: Dirent[],
@@ -45,11 +43,10 @@ function createDirAndFile(
 ) {
   dirs.forEach(async (dir) => {
     if (dir.isDirectory()) {
-      await mkdir(resolve(rootPath, dir.name), { recursive: true })
+      await mkdir(resolve(rootPath, dir.name))
       const dirs = await readdir(resolve(templatePath, dir.name), {
         encoding: 'utf-8',
-        withFileTypes: true,
-        recursive: true,
+        withFileTypes: true
       })
       createDirAndFile(
         dirs,
@@ -83,3 +80,5 @@ export function write(targetFilePath: string, originFilePath: string) {
     writeStream.on('finish', resolve)
   })
 }
+
+start()

@@ -2,20 +2,9 @@ import { existsSync, createReadStream, createWriteStream } from 'fs';
 import { readdir, mkdir, rm } from 'node:fs/promises';
 import { resolve } from 'path';
 import { fileURLToPath as fileURLToPath$1 } from 'url';
-import inquirer from 'inquirer';
 import { fileURLToPath } from 'node:url';
+import inquirer from 'inquirer';
 
-async function getTemplatePrompt() {
-    const templatePath = resolve(fileURLToPath(import.meta.url), '..', '..', '..', 'template');
-    const dirs = await readdir(templatePath, { 'withFileTypes': true });
-    const choices = dirs.filter(dir => dir.isDirectory() && !dir.name.startsWith('.')).map(dir => ({ name: dir.name, value: dir.name }));
-    return {
-        type: 'list',
-        message: 'select a template type',
-        name: 'selectTemplateType',
-        choices
-    };
-}
 const templateNamePrompt = {
     type: 'input',
     message: 'input a template name',
@@ -27,8 +16,17 @@ const overridePrompt = {
     message: 'override files ?',
     name: 'override',
 };
-getTemplatePrompt();
-
+async function getTemplatePrompt() {
+    const templatePath = resolve(fileURLToPath(import.meta.url), '..', '..', '..', 'template');
+    const dirs = await readdir(templatePath, { 'withFileTypes': true });
+    const choices = dirs.filter(dir => dir.isDirectory() && !dir.name.startsWith('.')).map(dir => ({ name: dir.name, value: dir.name }));
+    return {
+        type: 'list',
+        message: 'select a template type',
+        name: 'selectTemplateType',
+        choices
+    };
+}
 const getOption = async () => {
     const { selectTemplateType } = await inquirer.prompt([await getTemplatePrompt()]);
     const { templateName } = await inquirer.prompt([templateNamePrompt]);
@@ -68,19 +66,16 @@ async function start() {
     const dirs = await readdir(templatePath, {
         encoding: 'utf-8',
         withFileTypes: true,
-        recursive: true,
     });
     createDirAndFile(dirs, rootName, templatePath);
 }
-start();
 function createDirAndFile(dirs, rootPath, templatePath) {
     dirs.forEach(async (dir) => {
         if (dir.isDirectory()) {
-            await mkdir(resolve(rootPath, dir.name), { recursive: true });
+            await mkdir(resolve(rootPath, dir.name));
             const dirs = await readdir(resolve(templatePath, dir.name), {
                 encoding: 'utf-8',
-                withFileTypes: true,
-                recursive: true,
+                withFileTypes: true
             });
             createDirAndFile(dirs, resolve(rootPath, dir.name), resolve(templatePath, dir.name));
         }
@@ -102,5 +97,6 @@ function write(targetFilePath, originFilePath) {
         writeStream.on('finish', resolve);
     });
 }
+start();
 
 export { write };
