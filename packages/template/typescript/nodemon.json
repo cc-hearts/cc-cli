@@ -1,20 +1,9 @@
 {
-  "verbose": false,
-  "debug": false,
-  "exec": "node --loader ts-node/esm --experimental-specifier-resolution=node ./src/index.ts",
+  "exec": "node --loader ts-node/esm --experimental-specifier-resolution=node ./src/app.ts",
   "ignore": [
-    "node_modules",
-    "**/*.d.ts",
-    "*.test.ts",
-    "*.spec.ts",
-    "test/**/*"
+    "node_modules"
   ],
-  "events": {
-    "restart": ""
-  },
-  "watch": [
-    "./src/**/*.ts"
-  ],
-  "ext": "ts,tsx",
-  "inspect": true
+  "restartable": "rs",
+  "watch": ["*.*"],
+  "ext": "ts"
 }
