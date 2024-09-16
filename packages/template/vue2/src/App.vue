@@ -1,11 +1,11 @@
 <template>
-  <div>
-    hello
-  </div>
+	<div>
+		{{ $t('confirm') }}
+	</div>
 </template>
 
 <script>
-  export default {
-    name: 'App',
-  };
+export default {
+	name: 'App',
+};
 </script>
