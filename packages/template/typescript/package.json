@@ -1,24 +1,22 @@
 {
   "name": "ts-node-template",
   "version": "0.0.1",
-  "description": "",
-  "main": "index.js",
+  "author": "Carl Chen",
+  "license": "MIT",
   "type": "module",
   "scripts": {
-    "dev": "npx nodemon",
-    "test": "vitest"
+    "dev": "npx nodemon"
   },
   "keywords": [
     "hmr",
     "typescript",
     "template"
   ],
-  "author": "carl chen",
-  "license": "MIT",
   "devDependencies": {
     "@types/node": "^20.5.9",
     "nodemon": "^3.0.1",
-    "vitest": "^0.34.3",
-    "typescript": "^5.3.3"
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3",
+    "vitest": "^0.34.3"
   }
 }
