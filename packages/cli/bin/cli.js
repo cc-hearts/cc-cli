@@ -1,102 +1,23 @@
-import { existsSync, createReadStream, createWriteStream } from 'fs';
-import { readdir, mkdir, rm } from 'node:fs/promises';
-import { resolve } from 'path';
-import { fileURLToPath as fileURLToPath$1 } from 'url';
-import { fileURLToPath } from 'node:url';
-import inquirer from 'inquirer';
+import { intro, text, isCancel, cancel, confirm } from '@clack/prompts';
 
-const templateNamePrompt = {
-    type: 'input',
-    message: 'input a template name',
-    name: 'templateName',
-};
-// override prompt
-const overridePrompt = {
-    type: 'confirm',
-    message: 'override files ?',
-    name: 'override',
-};
-async function getTemplatePrompt() {
-    const templatePath = resolve(fileURLToPath(import.meta.url), '..', '..', '..', 'template');
-    const dirs = await readdir(templatePath, { 'withFileTypes': true });
-    const choices = dirs.filter(dir => dir.isDirectory() && !dir.name.startsWith('.')).map(dir => ({ name: dir.name, value: dir.name }));
-    return {
-        type: 'list',
-        message: 'select a template type',
-        name: 'selectTemplateType',
-        choices
-    };
-}
-const getOption = async () => {
-    const { selectTemplateType } = await inquirer.prompt([await getTemplatePrompt()]);
-    const { templateName } = await inquirer.prompt([templateNamePrompt]);
-    return {
-        selectTemplateType,
-        templateName,
-    };
-};
-const checkOverride = async () => {
-    return await inquirer.prompt([overridePrompt]);
-};
-
-async function start() {
-    const options = await getOption();
-    const { selectTemplateType, templateName } = options;
-    const templatePath = getTemplatePath(selectTemplateType);
-    const rootName = resolve(process.cwd(), templateName);
-    if (!existsSync(rootName)) {
-        await mkdir(rootName, { recursive: true });
+const create = async () => {
+    intro('create  a package ');
+    const name = await text({
+        message: 'package name?',
+        placeholder: 'packages'
+    });
+    console.log(name);
+    if (isCancel(name)) {
+        cancel('opt canceled');
+        return process.exit(0);
     }
-    else {
-        // have exist files
-        const dirs = await readdir(rootName, {
-            encoding: 'utf-8',
-            withFileTypes: true,
-            recursive: true,
-        });
-        if (dirs.length > 0) {
-            // prompt to confirm
-            const { override } = await checkOverride();
-            if (!override)
-                return;
-            await rm(rootName, { recursive: true });
-            await mkdir(rootName, { recursive: true });
-        }
-    }
-    const dirs = await readdir(templatePath, {
-        encoding: 'utf-8',
-        withFileTypes: true,
+    const isInstall = await confirm({
+        message: 'is install?'
     });
-    createDirAndFile(dirs, rootName, templatePath);
-}
-function createDirAndFile(dirs, rootPath, templatePath) {
-    dirs.forEach(async (dir) => {
-        if (dir.isDirectory()) {
-            await mkdir(resolve(rootPath, dir.name));
-            const dirs = await readdir(resolve(templatePath, dir.name), {
-                encoding: 'utf-8',
-                withFileTypes: true
-            });
-            createDirAndFile(dirs, resolve(rootPath, dir.name), resolve(templatePath, dir.name));
-        }
-        else {
-            const targetFilePath = resolve(rootPath, dir.name);
-            const originFilePath = resolve(templatePath, dir.name);
-            await write(targetFilePath, originFilePath);
-        }
-    });
-}
-function getTemplatePath(templateName) {
-    return resolve(fileURLToPath$1(import.meta.url), '..', '..', '..', 'template', templateName);
-}
-function write(targetFilePath, originFilePath) {
-    return new Promise((resolve) => {
-        const readStream = createReadStream(originFilePath, 'utf-8');
-        const writeStream = createWriteStream(targetFilePath);
-        readStream.pipe(writeStream);
-        writeStream.on('finish', resolve);
-    });
-}
-start();
+    const npmConfig = process.env.npm_config_user_agent;
+    console.log(npmConfig, '-------');
+    console.log(isInstall);
+};
+create();
 
-export { write };
+export { create };

@@ -23,6 +23,7 @@
   },
   "devDependencies": {
     "@cc-heart/eslint-config": "^1.0.0",
+    "@clack/prompts": "^0.7.0",
     "@types/inquirer": "^9.0.7",
     "@types/node": "^20.11.3",
     "eslint": "^8.56.0",
